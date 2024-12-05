@@ -8,14 +8,17 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
   password String
+  todos    Todo[]  // Relation field for User -> Todo (one-to-many)
 }
 
 model Todo {
-  id        Int     @id @default(autoincrement())
+  id        Int    @id @default(autoincrement())
   title     String
   completed Boolean @default(false)
   userId    Int
+  user      User   @relation(fields: [userId], references: [id]) // Define foreign key relationship
 }
+
