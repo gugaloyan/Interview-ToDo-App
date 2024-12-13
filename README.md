@@ -1,115 +1,107 @@
 # TODO App with NestJS, Prisma, and MySQL
 
-This project is a simple TODO application built with **NestJS**, **Prisma**, and **MySQL**. It includes basic authentication and a TODO management system.
+## Description
 
-## Task for Candidates
+This is a simple **TODO application** built using **NestJS**, **Prisma ORM**, and **MySQL**. The application allows users to register, log in, and manage their tasks (todos). It utilizes **JWT (JSON Web Tokens)** for authentication.
 
-You are tasked with **reviewing, improving, and fixing this codebase**. This application intentionally contains poor practices, missing features, and bugs. Your goal is to refactor and enhance the project while following modern backend development best practices.
+This project follows modern backend development best practices and includes **unit tests**, **Postman collection** for testing the API, and **docker** configurations for easy deployment.
 
----
+## Features
 
-## Requirements
+- **User Authentication**:
+  - User registration (`POST /auth/register`)
+  - User login (`POST /auth/login`) with JWT token generation.
 
-Your submission must include the following:
+- **Task Management**:
+  - Create a TODO (`POST /todos`)
+  - List all TODOs for a user (`GET /todos/:userId`)
 
-### 1. **Code Improvements**
-- Refactor the codebase to follow clean architecture and modular design principles.
-- Ensure proper error handling (e.g., try-catch blocks, meaningful HTTP response codes).
-- Implement middleware for authentication and JWT validation.
-- Use DTOs and validation pipes for incoming requests.
-- Avoid hardcoded values (e.g., `.env` for sensitive information).
-- Improve database queries to handle edge cases and optimize performance.
-- Add meaningful comments where necessary.
+- **User Management**:
+  - Fetch all users in the system (`GET /user`)
 
-### 2. **Unit and Integration Tests**
-- Write unit tests for critical services (e.g., authentication, TODO management).
-- Write at least one integration test to validate the API behavior end-to-end.
+## Tech Stack
 
-### 3. **Documentation**
-- Create documentation for the APIs using Postman and put the exported collection as json in the `documentation/api` folder.
-- Provide instructions for setting up and running the project locally.
+- **Backend Framework**: [NestJS](https://nestjs.com/)
+- **Database**: [MySQL](https://www.mysql.com/) (managed with [Prisma ORM](https://www.prisma.io/))
+- **Authentication**: [JWT](https://jwt.io/) for secure user login and session management
+- **ORM**: [Prisma ORM](https://www.prisma.io/)
+- **Password Hashing**: [bcrypt](https://www.npmjs.com/package/bcrypt)
+- **Testing**: [Jest](https://jestjs.io/)
+- **Environment Variables**: `@nestjs/config` for loading configuration settings
 
-### 4. **Edge Cases**
-- Handle edge cases such as invalid user input, empty TODO lists, invalid authentication tokens, etc.
+## Prerequisites
 
----
-
-## Getting Started
-
-### Prerequisites
-
-Ensure you have the following tools installed:
 - **Node.js** (v16 or higher)
 - **MySQL** (local instance or Docker)
-- **npm** 
-- **Git**
+- **npm** (or **yarn**)
+- **Docker** (optional for deployment)
 
-### Installation
+## Setup and Installation
 
-1. Clone the repository:
-```bash
-git clone https://github.com/rafayeljamalyandev/Interview-ToDo-App.git
+### Step-by-Step Setup
+
+1. **Clone the repository**:
+    ```bash
+    git clone https://github.com/your-username/Todo-App-NestJS-Prisma-MySQL.git
+    cd Todo-App-NestJS-Prisma-MySQL
+    ```
+
+2. **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+3. **Set up the `.env` file**:
+  - Create a `.env` file in the root of the project and add the following environment variables:
+    ```env
+    DATABASE_URL="mysql://root:password@localhost:3306/todoapp"
+    JWT_SECRET="your-secure-jwt-secret-key"
+    ```
+  - Replace `password` with your MySQL root password and set a secure `JWT_SECRET` key.
+
+4. **Run Prisma Migrations**:
+    ```bash
+    npx prisma migrate dev
+    ```
+
+5. **Start the Application**:
+    ```bash
+    npm run start:dev
+    ```
+
+   The application will now be running on `http://localhost:3000`.
+
+---
+
+## Working with Docker Compose
+
+You can run the application with **Docker Compose** to easily set up both the backend application and the MySQL database.
+
+### Step 1: **Create a `docker-compose.yml` File**
+
+Below is the `docker-compose.yml` file that sets up the **MySQL** database:
+
+```yaml
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: todoapp-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+
 ```
-
-2.	Install dependencies:
+** Running Docker Compose**:
 ```bash
-npm install
+docker-compose up --build
 ```
-
-3.	Set up the .env file:
-```bash
-DATABASE_URL="mysql://root:password@localhost:3306/todoapp"
-JWT_SECRET="some_secret_key"
-```
-
-4.	Apply Prisma migrations:
-
-```bash
-npx prisma migrate dev
-```
-
-
-5.	Start the application:
-```bash
-npm run start:dev
-```
-
-## Submission Format
-
-1.	Create a Fork
-•	Fork this repository to your personal GitHub account.
-2.	Create a Feature Branch
-•	Create a new branch for your work:
-
-```bash
-git checkout -b candidate-improvements
-```
-
-3.	Make Changes
-  •	Commit your improvements and push them to your branch.
-4.	Open a Merge Request (MR)
-  •	Submit a pull request (PR) from your feature branch to the main branch of this repository.
-5.	Provide a Summary
-  •	In your MR description, include:
-  •	A brief overview of the changes.
-  •	Key improvements and fixes.
-  •	Instructions for testing your changes.
-
-## Evaluation Criteria
-
-Your submission will be evaluated based on the following:
-1.	Code quality and readability.
-2.	Adherence to best practices.
-3.	Error handling and edge case management.
-4.	Test coverage and quality of tests.
-5.	Proper use of Prisma and database handling.
-6.	Documentation and clarity of instructions.
-
-Tips
-•	Focus on making the code modular and maintainable.
-•	Write meaningful commit messages.
-•	Don’t overcomplicate — aim for clarity and maintainability.
-
-Good luck! 🚀
-
-Let me know if you need further customization for the `README.md` file or assistance!
